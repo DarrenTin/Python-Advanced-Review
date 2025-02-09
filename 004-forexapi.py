@@ -8,6 +8,7 @@ def get_exchange_rate(from_currency, to_currency, api_key):
     
     # Check if the request was successful
     if data['result'] == 'success':
+        # print(data)
         exchange_rate = data['conversion_rates'].get(to_currency)
         if exchange_rate:
             return exchange_rate
