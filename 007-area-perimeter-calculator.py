@@ -1,140 +1,185 @@
-import math
+from math import pi as pi
+from math import sqrt as sqrt
+from math import tan as tan
 
-# Function to calculate area and perimeter of different shapes
-def calculate_area_and_perimeter(shape, **params):
-    if shape == 'rectangle':
-        length = params.get('length')
-        width = params.get('width')
-        area = length * width
-        perimeter = 2 * (length + width)
-        return area, perimeter
-    
-    elif shape == 'circle':
-        radius = params.get('radius')
-        area = math.pi * (radius ** 2)
-        perimeter = 2 * math.pi * radius
-        return area, perimeter
-    
-    elif shape == 'triangle':
-        base = params.get('base')
-        height = params.get('height')
-        side1 = params.get('side1')
-        side2 = params.get('side2')
-        area = 0.5 * base * height
-        perimeter = side1 + side2 + base
-        return area, perimeter
-    
-    elif shape == 'square':
-        side = params.get('side')
-        area = side ** 2
-        perimeter = 4 * side
-        return area, perimeter
-    
-    elif shape == 'parallelogram':
-        base = params.get('base')
-        height = params.get('height')
-        side = params.get('side')
-        area = base * height
-        perimeter = 2 * (base + side)
-        return area, perimeter
-    
-    elif shape == 'trapezoid':
-        a = params.get('a')  # length of one base
-        b = params.get('b')  # length of other base
-        height = params.get('height')
-        side1 = params.get('side1')
-        side2 = params.get('side2')
-        area = 0.5 * (a + b) * height
-        perimeter = a + b + side1 + side2
-        return area, perimeter
-    
-    elif shape == 'ellipse':
-        major_axis = params.get('major_axis')
-        minor_axis = params.get('minor_axis')
-        area = math.pi * major_axis * minor_axis
-        # Perimeter approximation (Ramanujan's formula)
-        perimeter = math.pi * (3 * (major_axis + minor_axis) - math.sqrt((3 * major_axis + minor_axis) * (major_axis + 3 * minor_axis)))
-        return area, perimeter
-    
-    elif shape == 'rhombus':
-        diagonal1 = params.get('diagonal1')
-        diagonal2 = params.get('diagonal2')
-        side = params.get('side')
-        area = 0.5 * diagonal1 * diagonal2
-        perimeter = 4 * side
-        return area, perimeter
-    
-    elif shape == 'regular_polygon':
-        side = params.get('side')
-        num_sides = params.get('num_sides')
-        # Area of regular polygon
-        area = (num_sides * side**2) / (4 * math.tan(math.pi / num_sides))
-        # Perimeter of regular polygon
-        perimeter = num_sides * side
-        return area, perimeter
-    
+available_shapes = ['square', 'rectangle', 'circle', 
+                    'triangle', 'parallelogram', 'trapezoid', 
+                    'ellipse', 'rhombus', 'regular polygon']
+
+def print_available_shapes():
+    print('available shapes\n-------------')
+    for count, shape in enumerate(available_shapes):
+        print(count + 1, '-', shape)
+    print('-------------')
+
+def check_if_shape_exist(shape_name):
+    if shape_name.isdigit():
+        try:
+            available_shapes[int(shape_name) - 1]
+            return True
+        except IndexError:
+            return False
+    elif shape_name in available_shapes:
+        return True
     else:
-        return "Shape not recognized."
+        return False
 
-# Example usage
-shape = input("Enter the shape (rectangle, circle, triangle, square, parallelogram, trapezoid, ellipse, rhombus, regular_polygon): ").lower()
+def get_formula(shape_name):
+    if shape_name == 'square':
+        return f'Area of {shape_name} = side², Perimeter = 4 × side'
+    elif shape_name == 'rectangle':
+        return f'Area of {shape_name} = length × width, Perimeter = 2 × (length + width)'
+    elif shape_name == 'circle':
+        return f'Area of {shape_name} = π × radius², Perimeter (Circumference) = 2 × π × radius'
+    elif shape_name == 'triangle':
+        return f'Area of {shape_name} = 0.5 × base × height, Perimeter = side1 + side2 + base'
+    elif shape_name == 'parallelogram':
+        return f'Area of {shape_name} = base × height, Perimeter = 2 × (base + side)'
+    elif shape_name == 'trapezoid':
+        return f'Area of {shape_name} = 0.5 × (a + b) × height, Perimeter = a + b + side1 + side2'
+    elif shape_name == 'ellipse':
+        return f'Area = π × major_axis × minor_axis, Perimeter (approx.) = π × (3 × (major_axis + minor_axis) - sqrt((3 × major_axis + minor_axis) × (major_axis + 3 × minor_axis)))'
+    elif shape_name == 'rhombus':
+        return f'Area of {shape_name} = 0.5 × diagonal1 × diagonal2, Perimeter = 4 × side'
+    elif shape_name == 'regular polygon':
+        return f'Area of {shape_name} = (num_sides × side²) / (4 × tan(π / num_sides)), Perimeter = num_sides × side'
+    
+def input_shape_info(shape_name):
+    if shape_name == 'square':
+        side = float(input('Enter the side length: '))
+        return {'side': side}
+    elif shape_name == 'rectangle':
+        length = float(input('Enter the length: '))
+        width = float(input('Enter the width: '))
+        return {'length': length, 'width': width}
+    elif shape_name == 'circle':
+        radius = float(input('Enter the radius: '))
+        return {'radius': radius}
+    elif shape_name == 'triangle':
+        base = float(input('Enter the base: '))
+        height = float(input('Enter the height: '))
+        side1 = float(input('Enter side 1: '))
+        side2 = float(input('Enter side 2: '))
+        return {'base': base, 'height': height, 'side1': side1, 'side2': side2}
+    elif shape_name == 'parallelogram':
+        base = float(input('Enter the base: '))
+        height = float(input('Enter the height: '))
+        side = float(input('Enter the side length: '))
+        return {'base': base, 'height': height, 'side': side}
+    elif shape_name == 'trapezoid':
+        a = float(input('Enter the length of base 1: '))
+        b = float(input('Enter the length of base 2: '))
+        height = float(input('Enter the height: '))
+        side1 = float(input('Enter side 1: '))
+        side2 = float(input('Enter side 2: '))
+        return {'a': a, 'b': b, 'height': height, 'side1': side1, 'side2': side2}
+    elif shape_name == 'ellipse':
+        major_axis = float(input('Enter the major axis length: '))
+        minor_axis = float(input('Enter the minor axis length: '))
+        return {'major_axis': major_axis, 'minor_axis': minor_axis}
+    elif shape_name == 'rhombus':
+        diagonal1 = float(input('Enter the first diagonal length: '))
+        diagonal2 = float(input('Enter the second diagonal length: '))
+        side = float(input('Enter the side length: '))
+        return {'diagonal1': diagonal1, 'diagonal2': diagonal2, 'side': side}
+    elif shape_name == 'regular polygon':
+        side = float(input('Enter the side length: '))
+        num_sides = int(input('Enter the number of sides: '))
+        return {'side': side, 'num_sides': num_sides}
+    
+def calculate_area(shape_name, params):
+    if shape_name == 'square':
+        return params['side'] ** 2
+    elif shape_name == 'rectangle':
+        return params['length'] * params['width']
+    elif shape_name == 'circle':
+        return pi * params['radius'] ** 2
+    elif shape_name == 'triangle':
+        return 0.5 * params['base'] * params['height']
+    elif shape_name == 'parallelogram':
+        return params['base'] * params['height']
+    elif shape_name == 'trapezoid':
+        return 0.5 * (params['a'] + params['b']) * params['height']
+    elif shape_name == 'ellipse':
+        return pi * params['major_axis'] * params['minor_axis']
+    elif shape_name == 'rhombus':
+        return 0.5 * params['diagonal1'] * params['diagonal2']
+    elif shape_name == 'regular polygon':
+        return (params['num_sides'] * params['side'] ** 2) / (4 * tan(pi / params['num_sides']))
 
-if shape == 'rectangle':
-    length = float(input("Enter the length: "))
-    width = float(input("Enter the width: "))
-    area, perimeter = calculate_area_and_perimeter(shape, length=length, width=width)
+def calculate_perimeter(shape_name, params):
+    if shape_name == 'square':
+        return 4 * params['side']
+    elif shape_name == 'rectangle':
+        return 2 * (params['length'] + params['width'])
+    elif shape_name == 'circle':
+        return 2 * pi * params['radius']
+    elif shape_name == 'triangle':
+        return params['side1'] + params['side2'] + params['base']
+    elif shape_name == 'parallelogram':
+        return 2 * (params['base'] + params['side'])
+    elif shape_name == 'trapezoid':
+        return params['a'] + params['b'] + params['side1'] + params['side2']
+    elif shape_name == 'ellipse':
+        return pi * (3 * (params['major_axis'] + params['minor_axis']) - 
+                          sqrt((3 * params['major_axis'] + params['minor_axis']) * 
+                                    (params['major_axis'] + 3 * params['minor_axis'])))
+    elif shape_name == 'rhombus':
+        return 4 * params['side']
+    elif shape_name == 'regular polygon':
+        return params['num_sides'] * params['side']
 
-elif shape == 'circle':
-    radius = float(input("Enter the radius: "))
-    area, perimeter = calculate_area_and_perimeter(shape, radius=radius)
+def app():
+    print('welcome to area perimeter calculator')
+    print('---------------------------------------')
+    print('1. print supported shape')
+    print('2. choose your shape')
+    print('3. check formula of shape')
+    print('4. get perimeter')
+    print('5. get area')
+    print('6. exit')
 
-elif shape == 'triangle':
-    base = float(input("Enter the base: "))
-    height = float(input("Enter the height: "))
-    side1 = float(input("Enter side 1: "))
-    side2 = float(input("Enter side 2: "))
-    area, perimeter = calculate_area_and_perimeter(shape, base=base, height=height, side1=side1, side2=side2)
+    chosen_shape = None
 
-elif shape == 'square':
-    side = float(input("Enter the side: "))
-    area, perimeter = calculate_area_and_perimeter(shape, side=side)
+    while True:
+        option = int(input('option: '))
 
-elif shape == 'parallelogram':
-    base = float(input("Enter the base: "))
-    height = float(input("Enter the height: "))
-    side = float(input("Enter the side: "))
-    area, perimeter = calculate_area_and_perimeter(shape, base=base, height=height, side=side)
+        if option == 1:
+            print_available_shapes()
+        elif option == 2:
+            chosen_shape = input('shape: ')
+            exist = check_if_shape_exist(chosen_shape)
+            if not exist:
+                print(f'shape {chosen_shape} not exist!')
+            else:
+                if chosen_shape.isdigit():
+                    try:
+                        chosen_shape = available_shapes[int(chosen_shape) - 1]
+                        print(f'you choose: {chosen_shape}')
+                    except IndexError:
+                        print(f'shape {int(chosen_shape)} not exist')
+        elif option == 3:
+            exist = check_if_shape_exist(chosen_shape)
+            if not exist:
+                print(f'please choose your shape first')
+            else:
+                formula = get_formula(chosen_shape)
+                print(formula)
+        elif option == 4:
+            if not chosen_shape:
+                print("please choose your shape first")
+                continue
+            shape_data = input_shape_info(chosen_shape)
+            perimeter = calculate_perimeter(shape_name=chosen_shape, params=shape_data)
+            print(f'perimeter: {perimeter:.2f}')
+        elif option == 5:
+            if not chosen_shape:
+                print("please choose your shape first")
+                continue
+            shape_data = input_shape_info(chosen_shape)
+            area = calculate_area(shape_name=chosen_shape, params=shape_data)
+            print(f'area: {area:.2f}')
+        elif option == 6:
+            break
 
-elif shape == 'trapezoid':
-    a = float(input("Enter the length of base 1: "))
-    b = float(input("Enter the length of base 2: "))
-    height = float(input("Enter the height: "))
-    side1 = float(input("Enter side 1: "))
-    side2 = float(input("Enter side 2: "))
-    area, perimeter = calculate_area_and_perimeter(shape, a=a, b=b, height=height, side1=side1, side2=side2)
-
-elif shape == 'ellipse':
-    major_axis = float(input("Enter the length of the major axis: "))
-    minor_axis = float(input("Enter the length of the minor axis: "))
-    area, perimeter = calculate_area_and_perimeter(shape, major_axis=major_axis, minor_axis=minor_axis)
-
-elif shape == 'rhombus':
-    diagonal1 = float(input("Enter the length of the first diagonal: "))
-    diagonal2 = float(input("Enter the length of the second diagonal: "))
-    side = float(input("Enter the length of the side: "))
-    area, perimeter = calculate_area_and_perimeter(shape, diagonal1=diagonal1, diagonal2=diagonal2, side=side)
-
-elif shape == 'regular_polygon':
-    side = float(input("Enter the length of one side: "))
-    num_sides = int(input("Enter the number of sides: "))
-    area, perimeter = calculate_area_and_perimeter(shape, side=side, num_sides=num_sides)
-
-else:
-    area, perimeter = "Shape not recognized.", ""
-
-# Output the results
-if isinstance(area, (int, float)) and isinstance(perimeter, (int, float)):
-    print(f"Area: {area:.2f}")
-    print(f"Perimeter: {perimeter:.2f}")
-else:
-    print(area)
+app()
