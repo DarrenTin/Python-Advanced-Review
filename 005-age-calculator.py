@@ -1,16 +1,24 @@
 from datetime import datetime
 
-# Function to calculate age
-def calculate_age(birth_date):
-    current_date = datetime.now()
-    age = current_date - birth_date
-    years = age.days // 365.25  # Account for leap years
-    days = age.days % 365.25
-    return f"{int(years)} years {int(days)} days"  # Convert to integers
+current_date = datetime.now()
+# birthdate = "2004-07-16"
+birthdate = input("birthdate (yyyy-mm-dd): ")
 
-# Example usage
-# birth_date = "2002-12-09"  # Replace with the person's birth year
-birth_date = input("Please enter your birth date (yyyy-mm-dd): ")
-birth_date = datetime.strptime(birth_date, "%Y-%m-%d") # Changed variable name for clarity
-age = calculate_age(birth_date)
-print(f"{age}")
+birthdate = datetime.strptime(birthdate, '%Y-%m-%d')
+age = current_date - birthdate
+remaining_life = 30000 - age.days
+life_progress = f"{age.days / 30000 * 100:.2f}"
+
+age = f"{age.days / 365.25:.2f}"
+remaining_life = f"{remaining_life / 365.25:.2f}"
+
+def visualized_bar(went):
+    went = float(went) // 10
+    to_go = 8 - went  # assume 80 years of lifespan
+    bar = f"{'✅' * int(went)}{'❌' * int(to_go)}"
+    return bar
+
+print(age + " years old.")
+print(remaining_life + " years to die.")
+print(life_progress + r"% of your life has passed.")
+print(f"progress => {visualized_bar(age)}")

@@ -1,24 +1,44 @@
-# Function to calculate BMI and categorize it
 def calculate_bmi(weight, height):
-    # BMI formula: weight (kg) / height (m)^2
     bmi = weight / (height ** 2)
-    
-    # Categorize BMI
+    bmi = round(bmi, 1)  # 1 decimal place
+    return bmi
+
+def group_bmi(bmi):
     if bmi < 18.5:
-        category = "Underweight"
-    elif 18.5 <= bmi < 24.9:
-        category = "Normal weight"
-    elif 25 <= bmi < 29.9:
-        category = "Overweight"
+        return 'underweight'
+    elif bmi >= 18.5 and bmi < 24.9:
+        return 'normal weight'
+    elif bmi >= 25 and bmi < 29.9:
+        return 'overweight'
     else:
-        category = "Obesity"
+        return 'obesity'
     
-    return bmi, category
+test_data = {
+    'Ali': {
+        'weight': 45,
+        'height': 1.3,
+    },
+    'Abu': {
+        'weight': 55,
+        'height': 1.2,
+    },
+    'Lily': {
+        'weight': 35,
+        'height': 1.4,
+    },
+}
 
-# Example usage
-weight = float(input("Enter your weight in kg: "))  # Get weight input
-height = float(input("Enter your height in meters: "))  # Get height input
+print("test data\n-----------------------\nname\tweight\theight")
+for person in test_data:
+    weight = test_data[person]['weight']
+    height = test_data[person]['height']
+    print(f"{person}\t{weight}kg\t{height}m")
 
-bmi, category = calculate_bmi(weight, height)
-
-print(f"Your BMI is {bmi:.2f}. Category: {category}")
+print("-----------------------")
+for person in test_data:
+    weight = test_data[person]['weight']
+    height = test_data[person]['height']
+    bmi = calculate_bmi(weight, height)
+    group = group_bmi(bmi)
+    print(f"name: {person}\nbmi: {bmi}\ngroup: {group}")
+    print("-----")
