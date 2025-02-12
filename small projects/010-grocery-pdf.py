@@ -1,7 +1,7 @@
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image
 from reportlab.lib import colors
 
 def totalize(items):
@@ -13,15 +13,19 @@ def generate_pdf(items, total_bill, pdf_name='invoice1.pdf'):
     styles = getSampleStyleSheet()
     elements = []
 
+    img = Image(r"small projects\logo.jpg", width=200, height=200)
+    elements.append(img)
     title = Paragraph("Buy Record", styles["h1"])
     elements.append(title)
     elements.append(Spacer(1, 12)) # 1 width, 12 height
 
-    data = [['Item', 'Price']]
+    data = [['Item', 'Price']] # table header
+    col_widths = [300, 100]
+    
     for i in items:
-        data.append([i[0], f"${i[1]:.2f}"])
+        data.append([i[0], f"${i[1]:.2f}"]) # table data
 
-    table = Table(data)
+    table = Table(data, colWidths=col_widths)
     table.setStyle(TableStyle([
         # ('STYLE_TYPE', (row_start [x], col_start [y]), (row_end, col_end), style_value),
         ('BACKGROUND', (0, 0), (-1, 0), colors.grey),  # Header background color
