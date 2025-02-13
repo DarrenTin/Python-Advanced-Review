@@ -1,20 +1,11 @@
-# Function to calculate the tip and total bill
-def calculate_tip_and_total(bill_amount, tip_percentage):
-    tip = bill_amount * (tip_percentage / 100)
-    total = bill_amount + tip
-    return tip, total
+def enter_bill():
+    bill = float(input("Enter bill: "))
+    percent = float(input("Percentage: "))
+    return bill, percent
 
-# Main program
-if __name__ == "__main__":
-    print("Welcome to the Tip Calculator!")
+def calculate_tip(bill, pencent):
+    total = bill + bill * pencent / 100
+    return f"{total:.1f}"
 
-    # Input: Total bill and tip percentage
-    bill_amount = float(input("Enter the total bill amount: $"))
-    tip_percentage = float(input("Enter the tip percentage (e.g., 15 for 15%): "))
-
-    # Calculate the tip and total
-    tip, total = calculate_tip_and_total(bill_amount, tip_percentage)
-
-    # Display the results
-    print(f"Tip: ${tip:.2f}")
-    print(f"Total bill including tip: ${total:.2f}")
+bill, percent = enter_bill()
+print("Total:", calculate_tip(bill, percent))
